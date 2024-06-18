@@ -47,7 +47,7 @@ class _OrderSummaryBottomSheetState extends State<OrderSummaryBottomSheet> {
             controller: _scrollController,
             children: [
               if (state is OrderSummaryList) ..._buildForSummaryList(state),
-              if (state is OrderSummarySuccess) Text('Order has been placed for total of: ${state.order.totalPrice}'),
+              if (state is OrderSummarySuccess) Text('Order has been placed for total of: ${state.order.totalPrice} €'),
               if (state is OrderSummaryError) Text('Error: ${state.error}'),
               ElevatedButton(
                 onPressed: () {

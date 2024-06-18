@@ -6,7 +6,7 @@ part 'order_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class OrderModel {
-  final int id;
+  final String id;
   final int tableNumber;
   final List<MenuItem>? drinks;
   final List<MenuItem>? firstMeals;
@@ -28,7 +28,7 @@ class OrderModel {
 
   factory OrderModel.initial() {
     return OrderModel(
-      id: 0, // Or whatever default ID you prefer
+      id: '', // Or whatever default ID you prefer
       tableNumber: 0, // Or a default table number
       waiterId: 0, // Or a default waiter ID
       totalPrice: 0, // Or null if you want
@@ -41,7 +41,7 @@ class OrderModel {
   Map<String, dynamic> toJson() => _$OrderModelToJson(this);
 
   OrderModel copyWith({
-    int? id,
+    String? id,
     int? tableNumber,
     int? waiterId,
     int? totalPrice,

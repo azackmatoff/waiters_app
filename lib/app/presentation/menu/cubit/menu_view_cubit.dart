@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uuid/uuid.dart';
 import 'package:waiters_app/app/common/constants/dummy_content/dummy_content.dart';
 import 'package:waiters_app/app/data/models/menu_item.dart';
 import 'package:waiters_app/app/data/models/order_model.dart';
@@ -44,7 +45,7 @@ class MenuViewCubit extends Cubit<MenuViewCubitState> {
   void _updateQuantity(MenuItem item, List<MenuItem> itemList, {bool decrease = false}) {
     final updatedItems = itemList.map((i) {
       if (i == item) {
-        final newQuantity = (decrease ? i.quantity - 1 : i.quantity + 1).clamp(0, 99);
+        final newQuantity = (decrease ? i.quantity - 1 : i.quantity + 1);
         return i.copyWith(quantity: newQuantity);
       }
       return i;
@@ -74,13 +75,13 @@ class MenuViewCubit extends Cubit<MenuViewCubitState> {
     final totalItems = selectedDrinks.length + selectedStarters.length + selectedMainCourses.length;
     if (totalItems == 0) {
       // Handle the case where no items are selected (e.g., show an error message)
-      return OrderModel(id: 0, tableNumber: 0, waiterId: 0, totalPrice: 0); // Return a dummy object
+      return OrderModel(id: '', tableNumber: 0, waiterId: 0, totalPrice: 0); // Return a dummy object
     }
 
     final totalPrice = _calculateTotalPrice(selectedDrinks, selectedStarters, selectedMainCourses);
 
     return OrderModel(
-      id: 0, // Replace with your logic to generate an order ID
+      id: const Uuid().v4(), // Replace with your logic to generate an order ID
       tableNumber: tableNumber,
       drinks: selectedDrinks,
       firstMeals: selectedStarters,

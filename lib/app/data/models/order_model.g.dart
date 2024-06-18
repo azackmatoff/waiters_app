@@ -7,7 +7,7 @@ part of 'order_model.dart';
 // **************************************************************************
 
 OrderModel _$OrderModelFromJson(Map<String, dynamic> json) => OrderModel(
-      id: (json['id'] as num).toInt(),
+      id: json['id'] as String,
       tableNumber: (json['tableNumber'] as num).toInt(),
       waiterId: (json['waiterId'] as num).toInt(),
       totalPrice: (json['totalPrice'] as num?)?.toInt(),

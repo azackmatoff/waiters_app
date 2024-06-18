@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:waiters_app/app/common/constants/dummy_content/dummy_content.dart';
 import 'package:waiters_app/app/data/models/menu_item.dart';
 import 'package:waiters_app/app/data/models/order_model.dart';
 import 'package:waiters_app/app/presentation/menu/cubit/menu_view_cubit.dart';
@@ -61,33 +60,44 @@ class _MenuViewState extends State<MenuView> with SingleTickerProviderStateMixin
 
               // Bottom Container (visible if items are selected)
               if (state.totalSelectedItems > 0) // Conditionally show the container
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200], // Background color
-                    border: Border(
-                      top: BorderSide(color: Colors.grey[300]!),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '${state.totalSelectedItems} items selected',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          _showOrderSummary(context, _cubit.createOrderModel(widget.tableNumber, 1));
-                        },
-                        child: const Text('View Order'),
-                      ),
-                    ],
-                  ),
-                ),
+                _bottomContainer(state, context),
             ],
           );
         },
+      ),
+    );
+  }
+
+  Widget _bottomContainer(MenuViewCubitState state, BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+      decoration: BoxDecoration(
+        color: Colors.grey[200], // Background color
+        border: Border(
+          top: BorderSide(color: Colors.grey[300]!),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            '${state.totalSelectedItems} items selected',
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              _showOrderSummary(
+                  context,
+                  _cubit.createOrderModel(
+                    widget.tableNumber,
+
+                    /// dummy waiter id
+                    widget.tableNumber + 1,
+                  ));
+            },
+            child: const Text('View Order'),
+          ),
+        ],
       ),
     );
   }
@@ -118,7 +128,13 @@ class _MenuViewState extends State<MenuView> with SingleTickerProviderStateMixin
   void _showOrderSummary(BuildContext context, OrderModel order) {
     showModalBottomSheet(
       context: context,
-      builder: (context) => OrderSummaryBottomSheet(order: order),
+      isScrollControlled: true,
+      builder: (context) {
+        return FractionallySizedBox(
+          heightFactor: 0.8,
+          child: OrderSummaryBottomSheet(order: order),
+        );
+      },
     );
   }
 }
