@@ -8,8 +8,8 @@ class OrderRepositoryImpl implements OrderRepository {
   OrderRepositoryImpl({required this.localDataSource});
 
   @override
-  Future<void> addOrder(OrderModel order) async {
-    await localDataSource.insertOrder(order);
+  Future<void> placeOrder(OrderModel order) async {
+    await localDataSource.placeOrder(order);
   }
 
   @override

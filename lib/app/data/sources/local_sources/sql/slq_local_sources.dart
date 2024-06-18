@@ -21,13 +21,8 @@ class SqlLocalDataSource {
     return maps.map((i) => WaiterModel.fromJson(i)).toList();
   }
 
-  Future<int> insertOrder(OrderModel order) async {
-    final orderMap = order.toJson();
-    orderMap[AppTexts.drinks] = jsonEncode(order.drinks?.map((drink) => drink.toJson()).toList()); // Encode as JSON
-    orderMap[AppTexts.firstMeals] = jsonEncode(order.firstMeals?.map((firstMeal) => firstMeal.toJson()).toList());
-    orderMap[AppTexts.mainMeals] = jsonEncode(order.mainMeals?.map((mainMeal) => mainMeal.toJson()).toList());
-    orderMap[AppTexts.totalPrice] = order.totalPrice?.toInt() ?? 0; // Convert to int
-    return await _sqlLiteServices.insert(AppTexts.orders, orderMap);
+  Future<int> placeOrder(OrderModel order) async {
+    return await _sqlLiteServices.insert(AppTexts.orders, order.toMap());
   }
 
   Future<List<OrderModel>> getAllOrders() async {

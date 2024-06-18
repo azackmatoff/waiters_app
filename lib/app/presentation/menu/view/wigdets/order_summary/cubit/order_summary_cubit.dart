@@ -31,7 +31,7 @@ class OrderSummaryCubit extends Cubit<OrderSummaryCubitState> {
     try {
       final order = (state as OrderSummaryList).order;
       emit(OrderSummaryLoading()); // Show loading state
-      await _orderRepository.addOrder(order); // Cast to OrderSummaryList
+      await _orderRepository.placeOrder(order); // Cast to OrderSummaryList
       emit(OrderSummarySuccess(order: order)); // Show success state
     } catch (e) {
       // Handle the error, e.g., by showing a snackbar or dialog

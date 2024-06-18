@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:json_annotation/json_annotation.dart';
 
 import 'package:waiters_app/app/data/models/menu_item.dart';
@@ -39,6 +41,19 @@ class OrderModel {
   }
 
   Map<String, dynamic> toJson() => _$OrderModelToJson(this);
+
+  // Method to convert OrderModel to a Map suitable for SQLite insertion
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'tableNumber': tableNumber,
+      'drinks': jsonEncode(drinks?.map((item) => item.toJson()).toList() ?? []),
+      'firstMeals': jsonEncode(firstMeals?.map((item) => item.toJson()).toList() ?? []),
+      'mainMeals': jsonEncode(mainMeals?.map((item) => item.toJson()).toList() ?? []),
+      'waiterId': waiterId,
+      'totalPrice': totalPrice,
+    };
+  }
 
   OrderModel copyWith({
     String? id,

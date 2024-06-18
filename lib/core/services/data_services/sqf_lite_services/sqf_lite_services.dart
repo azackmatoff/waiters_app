@@ -32,7 +32,7 @@ class SqfLiteServices {
           'CREATE TABLE waiters(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)',
         );
         await db.execute(
-          'CREATE TABLE orders(id INTEGER PRIMARY KEY AUTOINCREMENT, tableNumber INTEGER, drinks TEXT, firstMeals TEXT, mainMeals TEXT, waiterId INTEGER, totalPrice INTEGER, FOREIGN KEY (waiterId) REFERENCES waiters(id))', // Add totalPrice column
+          'CREATE TABLE orders(id TEXT PRIMARY KEY, tableNumber INTEGER, drinks TEXT, firstMeals TEXT, mainMeals TEXT, waiterId INTEGER, totalPrice INTEGER, FOREIGN KEY (waiterId) REFERENCES waiters(id))', // Add totalPrice column
         );
       },
       onUpgrade: (db, oldVersion, newVersion) {
@@ -43,7 +43,11 @@ class SqfLiteServices {
 
   Future<int> insert(String table, Map<String, dynamic> data) async {
     _checkIfDatabaseInited();
-    return await _database!.insert(table, data);
+    return await _database!.insert(
+      table,
+      data,
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 
   Future<List<Map<String, dynamic>>> queryAll(String table) async {
